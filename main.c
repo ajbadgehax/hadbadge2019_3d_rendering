@@ -19,28 +19,30 @@ uint8_t *fbmem;
 								(((R) & 0xFF) <<  0))
 // #define FB_PIX(X, Y) fbmem[(X) + ((Y) * FB_WIDTH)]
 
-void main(int argc, char **argv){
-	GFX_REG(GFX_BGNDCOL_REG)=0;				// Bleck
+void setupscreen(){
+	GFX_REG(GFX_BGNDCOL_REG)=0;				// set bg to Bleck
 	GFX_REG(GFX_LAYEREN_REG)=0;				// Disable all gfx layers
 	fbmem=calloc(FB_WIDTH,FB_HEIGHT);		// Allocate screen buffer
-
 	GFX_REG(GFX_FBPITCH_REG)=(GFX_FBPITCH_PAL_OFF)|(FB_WIDTH<<GFX_FBPITCH_PITCH_OFF);	// Declare Pitch for the color Palette
 	GFX_REG(GFX_FBADDR_REG)=((uint32_t)fbmem);
-
-	// Clear the framebuffer
 	for(int i=0; i<(FB_WIDTH * FB_HEIGHT); i++){
-		fbmem[i] = 0;
+		fbmem[i] = 0;						// Clear the framebuffer
 	}
-
-	// GFX_REG(GFX_LAYEREN_REG)=GFX_LAYEREN_FB_8BIT|GFX_LAYEREN_FB|GFX_LAYEREN_TILEA;	// Emable framebuffer
+	// GFX_REG(GFX_LAYEREN_REG)=GFX_LAYEREN_FB_8BIT|GFX_LAYEREN_FB|GFX_LAYEREN_TILEA;
+	// GFX_REG(GFX_LAYEREN_REG)=GFX_LAYEREN_FB_8BIT|GFX_LAYEREN_FB|GFX_LAYEREN_TILEA;	// Emable framebuffer and layer A
 	GFX_REG(GFX_LAYEREN_REG)=GFX_LAYEREN_FB;	// Emable framebuffer
-
-	// Set colors
+}
+void setcolors(){
 	GFXPAL[0] = COMP_COLOR(0xFF, 0xFF, 0xFF, 0xFF);
 	GFXPAL[1] = COMP_COLOR(0xFF, 0x00, 0x00, 0xFF);
 	GFXPAL[2] = COMP_COLOR(0xFF, 0x00, 0xFF, 0x00);
 	GFXPAL[3] = COMP_COLOR(0xFF, 0xFF, 0x00, 0x00);
-	
+}
+
+void main(int argc, char **argv){
+	setupscreen();
+	setcolors();
+
 	// Set pixels to the color
 	for(int i=0; i<(FB_WIDTH * FB_HEIGHT); i++){
 		switch(i%4){

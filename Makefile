@@ -1,11 +1,11 @@
-#This is an example Makefile to build the fire effect example.
+#This Makefile is to build the 3D rendering engine.
 
 #The name of the app. The resulting file will be called APPNAME.elf.
 APPNAME = 3D_Rendering
 
 #Option 1 of indicating what files to compile: tell the SDK what directories contain
 #source files. The SDK will then compile everything in these directories.
-SRCDIRS = .
+SRCDIRS = . subdir
 
 #Option 2: Tell the SDK what objects there are. The objects are effectively all
 #compilable files with their extension changed to .o. Note: This means it will not
